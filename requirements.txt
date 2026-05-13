@@ -1,0 +1,5 @@
+requests
+prompt_toolkit
+fastapi
+python-multipart
+uvicorn[standard]

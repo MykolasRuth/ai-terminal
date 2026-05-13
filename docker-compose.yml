@@ -1,0 +1,28 @@
+services:
+  devserver:
+    build: .
+    image: devserver-ai-terminal
+    stdin_open: true
+    tty: true
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      DEVSERVER_START_CWD: /projects
+      DEVSERVER_PROJECTS_DIR: /projects
+    volumes:
+      - ${DEVSERVER_PROJECTS:-${HOME}/Projects}:/projects
+  devserver-web:
+    build: .
+    image: devserver-ai-terminal
+    command: ["web"]
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      DEVSERVER_START_CWD: /projects
+      DEVSERVER_PROJECTS_DIR: /projects
+      DEVSERVER_WEB_HOST: 0.0.0.0
+      DEVSERVER_WEB_PORT: 8787
+      DEVSERVER_WEB_USER: ${DEVSERVER_WEB_USER:-}
+      DEVSERVER_WEB_PASSWORD: ${DEVSERVER_WEB_PASSWORD:-}
+    ports:
+      - "8787:8787"
+    volumes:
+      - ${DEVSERVER_PROJECTS:-${HOME}/Projects}:/projects
