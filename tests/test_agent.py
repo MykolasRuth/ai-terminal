@@ -203,7 +203,7 @@ class AgentTests(unittest.TestCase):
         self.assertEqual(state["cwd"], opened_path)
 
     def test_execute_tool_call_reports_progress(self):
-        state = {"cwd": Path("C:/Users/devserver/Projects"), "tool_log": []}
+        state = {"cwd": Path.home(), "tool_log": []}  # a real folder on any OS (macOS temp dirs sit under /private)
         registry = {
             "read_file": Tool(
                 "read_file",

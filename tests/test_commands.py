@@ -1,3 +1,5 @@
+from unittest import mock
+import os
 import io
 import tempfile
 import unittest
@@ -18,7 +20,13 @@ from ai_terminal.tools import build_registry
 class CommandTests(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory()
-        self.root = Path(self.temp_dir.name)
+        self.root = Path(self.temp_dir.name).resolve()  # macOS: /var is really /private/var
+        # Some commands act differently inside an SSH session; tests shouldn't depend on how they're run.
+        env = mock.patch.dict(os.environ)
+        env.start()
+        self.addCleanup(env.stop)
+        for name in ("SSH_CONNECTION", "SSH_CLIENT", "SSH_TTY"):
+            os.environ.pop(name, None)
         (self.root / "ai_terminal").mkdir()
         (self.root / "ai_terminal" / "cli.py").write_text("def main():\n    pass\n", encoding="utf-8")
         (self.root / "tools.md").write_text("tool docs\n", encoding="utf-8")
