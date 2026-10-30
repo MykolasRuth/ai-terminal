@@ -23,6 +23,8 @@ More detail: [ARCHITECTURE.md](ARCHITECTURE.md) (modules and dependency directio
 
 ## Quick start
 
+Copy `.env.example` to `.env` and adjust it (`.env` is gitignored).
+
 ```bash
 pip install -r requirements.txt   # Python 3, with Ollama running and a model pulled
 python ollama_cli.py              # terminal mode
